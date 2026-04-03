@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: day
+    ports:
+      - "3307:3306"   # Host port 3307 → Container port 3306
+    volumes:
+      - mysql-data:/var/lib/mysql   # Persist database data
+    networks:
+      - app-network
+
+  apiapp:
+    image: apiapp:latest
+    container_name: apiapp-container
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/day
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8081:8080"   # Host port 8081 → Container port 8080
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
