@@ -1,14 +1,11 @@
 pipeline {
     agent any
-
-    stages {
-
-        stage('Clone Code') {
-            steps {
-                git 'https://github.com/Raghavi-codes/DockerAPI.git'
+     
+     environment {
+            MAVEN_HOME = 'D:\\java\\PracticeMS\\apache-maven-3.9.5'
             }
-        }
-
+   
+           stages{
         stage('Build JAR') {
             steps {
                 bat '"%MAVEN_HOME%\\bin\\mvn" clean package -DskipTests'
